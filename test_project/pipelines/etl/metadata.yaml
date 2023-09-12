@@ -1,0 +1,210 @@
+blocks:
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    dynamic: false
+  downstream_blocks:
+  - load_df
+  - move_to_archived
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: Load path
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_loader
+  upstream_blocks: []
+  uuid: load_path
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - keep_composite_keys
+  - remove_cols
+  - move_to_archived
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: load df
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_loader
+  upstream_blocks:
+  - load_path
+  uuid: load_df
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - drop_duplicates
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: remove cols
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - load_df
+  uuid: remove_cols
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - add_uuid
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: drop duplicates
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - remove_cols
+  uuid: drop_duplicates
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - export_to_serial_prod
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: add uuid
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - drop_duplicates
+  uuid: add_uuid
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - drop_dups
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: keep composite keys
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - load_df
+  uuid: keep_composite_keys
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - add_uuid2
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: drop dups
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - keep_composite_keys
+  uuid: drop_dups
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - export_to_db
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: add_uuid2
+  retry_config: null
+  status: updated
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - drop_dups
+  uuid: add_uuid2
+- all_upstream_blocks_executed: false
+  color: null
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: export to db
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - add_uuid2
+  uuid: export_to_db
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: move to archived
+  retry_config: null
+  status: updated
+  timeout: null
+  type: custom
+  upstream_blocks:
+  - load_path
+  - load_df
+  uuid: move_to_archived
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    file_path: null
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: export_to_serial_prod
+  retry_config: null
+  status: updated
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - add_uuid
+  uuid: export_to_serial_prod
+callbacks: []
+concurrency_config: {}
+conditionals: []
+created_at: '2023-09-11 16:11:44.602818+00:00'
+data_integration: null
+description: null
+executor_config: {}
+executor_count: 1
+executor_type: null
+extensions: {}
+name: ETL
+notification_config: {}
+retry_config: {}
+run_pipeline_in_one_process: false
+spark_config: {}
+tags: []
+type: python
+updated_at: '2023-09-12 07:47:43'
+uuid: etl
+widgets: []

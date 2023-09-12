@@ -1,0 +1,12 @@
+triggers:
+- envs: []
+  name: every min
+  pipeline_uuid: check_files
+  schedule_interval: '* * * * *'
+  schedule_type: time
+  settings:
+    skip_if_previous_running: true
+  sla: null
+  start_time: 2023-09-11 22:06:00
+  status: active
+  variables: null
