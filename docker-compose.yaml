@@ -1,0 +1,59 @@
+version: '3'
+services: 
+  postgres:
+    image: postgres:15.4
+    container_name: postgres
+    environment:
+      POSTGRES_DB: my_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sergtsop
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - mage-network
+    
+  server:
+    image: mageai/mageai:latest
+    container_name: mage_pipeline
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    environment:
+      MAGE_DATABASE_CONNECTION_URL: postgresql+psycopg2://postgres:sergtsop@postgres:5432/my_db
+    command: /app/run_app.sh mage start test_project
+    depends_on:
+      - postgres
+    cpu_shares: 2
+    mem_limit: 2g
+    ports:
+      - "6789:6789"
+    networks:
+      - mage-network
+    volumes:
+      - .:/home/src
+    restart: on-failure:5
+    stdin_open: true # used for interactive debugging
+    tty: true # used for interactive debugging
+   
+
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: data_generator
+    cpu_shares: 2
+    mem_limit: 2g
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app  # Mount data_sample
+    depends_on:
+      - server
+networks:
+  mage-network:
+    driver: bridge
+volumes:
+  pgdata:
